@@ -8,7 +8,6 @@
 │	               └── *.conf
 │            └── scala
 │                  └── com/sxkj  （根目录）
-│                        ├── constant  （常量）
 │                        ├── test  （测试代码）
 │                        ├── utils  （工具类）
 │                        ├── pool  （连接类：mysql,redis,hbase,hive,hdfs）
