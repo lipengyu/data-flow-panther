@@ -1,0 +1,34 @@
+---                       #yml文件标识
+- hosts: log_audit_exe[0]    #要执行的主机或主机组
+  user: root           #脚本在客户主机执行脚本是所使用的用户
+  vars:                   #变量组，每个kv都会在后面用到
+    soft_path: /opt/Apps/panther
+    source_path: /var/lib/jenkins/workspace/data-flow-panther
+  vars_files:             #变量文件路径，可以把更多的变量防止到文件里统一调用
+  tasks:                  #任务列表
+  - name: 复制java包       #要执行的功能
+    copy:                                 #复制模块
+      src: "{{ item }}"                   #源路径
+      dest: "{{ soft_path }}/libs/"    #目标路径
+      force: yes                          #强制覆盖
+    with_items:                           #循环列表
+    - "{{ source_path }}/target/data-flow-panther-1.0-SNAPSHOT-jar-with-dependencies.jar"
+
+  #- name: chmod shell file      #执行shell命令
+  #  shell: "/bin/find {{ soft_path }} -name '*.sh' |/bin/xargs chmod 750"
+
+  - name: chown file owner      #更改文件属主
+    file:                       #文件模块
+      path: "{{ soft_path }}"   #文件路径
+      owner: weadmin            #用户
+      group: weadmin            #组
+      recurse: yes              #遍历授权
+
+
+
+#更换主机执行最后的脚本
+#- hosts: log_audit_exe[0]   #主机
+#  user: root
+#  vars:
+#    soft_path: /opt/Apps/log-audit
+#  vars_files:
